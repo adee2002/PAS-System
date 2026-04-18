@@ -31,6 +31,9 @@ public class RegisterModel : PageModel
 
         if (result.Succeeded)
         {
+            
+            await _userManager.AddToRoleAsync(user, Input.Role);
+
             return RedirectToPage("/Account/Login");
         }
 
