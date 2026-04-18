@@ -1,14 +1,17 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Identity;
 
 public class LoginModel : PageModel
 {
     private readonly SignInManager<IdentityUser> _signInManager;
+    private readonly UserManager<IdentityUser> _userManager;
 
-    public LoginModel(SignInManager<IdentityUser> signInManager)
+    public LoginModel(SignInManager<IdentityUser> signInManager,
+                      UserManager<IdentityUser> userManager)
     {
         _signInManager = signInManager;
+        _userManager = userManager;
     }
 
     [BindProperty]
@@ -26,10 +29,21 @@ public class LoginModel : PageModel
 
         if (result.Succeeded)
         {
-            return RedirectToPage("/Index");
+            var user = await _userManager.FindByEmailAsync(Input.Email);
+            var roles = await _userManager.GetRolesAsync(user);
+
+            
+            if (roles.Contains("Supervisor"))
+                return RedirectToPage("/Supervisor/Dashboard");
+
+            if (roles.Contains("Student"))
+                return RedirectToPage("/Student/Dashboard");
+
+            if (roles.Contains("Admin"))
+                return RedirectToPage("/Admin/Dashboard");
         }
 
-        ModelState.AddModelError("", "Invalid login");
+        ModelState.AddModelError("", "Invalid login attempt");
         return Page();
     }
 }
