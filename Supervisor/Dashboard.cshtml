@@ -1,0 +1,145 @@
+@model ProjectFilterViewModel
+@{
+    ViewData["Title"] = "Supervisor Dashboard";
+}
+
+<div class="container py-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-2">
+        <h2 class="mb-0">Blind Project List</h2>
+        <a class="btn btn-outline-secondary" href="/Supervisor/MyInterests">My Interests</a>
+    </div>
+
+    @if (TempData["Success"] is string successMessage)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @successMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] is string errorMessage)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @errorMessage
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form method="get" action="/Supervisor/Projects" id="filterForm" class="row g-3 align-items-end">
+                <div class="col-12 col-md-4">
+                    <label class="form-label">Research Area</label>
+                    <select name="ResearchArea" class="form-select">
+                        <option value="">All Areas</option>
+                        @foreach (var area in Model.AvailableResearchAreas)
+                        {
+                            if (Model.ResearchArea == area)
+                            {
+                                <option value="@area" selected>@area</option>
+                            }
+                            else
+                            {
+                                <option value="@area">@area</option>
+                            }
+                        }
+                    </select>
+                </div>
+
+                <div class="col-12 col-md-3">
+                    <label class="form-label">Keyword</label>
+                    <input type="text" name="Keyword" value="@Model.Keyword" class="form-control" placeholder="Search title/abstract/stack" />
+                </div>
+
+                <div class="col-12 col-md-3">
+                    <label class="form-label">Tags</label>
+                    <input type="text" name="Tags" value="@Model.Tags" class="form-control" placeholder="AI, ML, NLP..." />
+                </div>
+
+                <div class="col-12 col-md-2 d-grid">
+                    <button class="btn btn-primary" type="submit">Apply Filter</button>
+                </div>
+            </form>
+
+            <div id="loadingIndicator" class="mt-3 d-none">
+                <div class="spinner-border spinner-border-sm text-primary" role="status"></div>
+                <span class="ms-2">Loading projects...</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3">
+        @if (Model.Projects.Count == 0)
+        {
+            <div class="col-12">
+                <div class="alert alert-info mb-0">No projects found for this filter.</div>
+            </div>
+        }
+        else
+        {
+            @foreach (var project in Model.Projects)
+            {
+                var isInterested = Model.InterestedProjectIds.Contains(project.Id);
+                <div class="col-12 col-lg-6">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">@project.Title</h5>
+                            <p class="text-muted mb-2"><strong>Research Area:</strong> @project.ResearchArea</p>
+                            <p class="text-muted mb-2"><strong>Tech Stack:</strong> @project.TechStack</p>
+                            <p class="text-muted mb-3"><strong>Tags:</strong> @project.Tags</p>
+                            <p class="card-text flex-grow-1">@project.Abstract</p>
+
+                            <form method="post" action="/Supervisor/Interest/@project.Id" class="mt-3">
+                                @Html.AntiForgeryToken()
+                                @if (isInterested)
+                                {
+                                    <button type="button" class="btn btn-secondary w-400" disabled>Interested</button>
+                                }
+                                else
+                                {
+                                    <button type="submit" class="btn btn-success w-100">Express Interest</button>
+                                }
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    <div class="card shadow-sm mt-4">
+        <div class="card-header bg-light d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Interested Project List</h5>
+            <a class="btn btn-sm btn-outline-secondary" href="/Supervisor/MyInterests">View Full List</a>
+        </div>
+        <div class="card-body">
+            @if (Model.InterestedProjects.Count == 0)
+            {
+                <p class="text-muted mb-0">No interested projects yet. Click Express Interest in the list above.</p>
+            }
+            else
+            {
+                <div class="list-group">
+                    @foreach (var interest in Model.InterestedProjects.Take(5))
+                    {
+                        <div class="list-group-item">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h6 class="mb-1">@interest.Title</h6>
+                                <span class="badge bg-success">@interest.Status</span>
+                            </div>
+                            <small class="text-muted">Area: @interest.ResearchArea | Stack: @interest.TechStack</small>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById("filterForm")?.addEventListener("submit", function () {
+            document.getElementById("loadingIndicator")?.classList.remove("d-none");
+        });
+    </script>
+}
