@@ -1,0 +1,101 @@
+﻿@page
+@model WebApplication1.Pages.Admin.AdminLoginModel
+@{
+    ViewData["Title"] = "Admin Login";
+}
+
+<div class="admin-login-page">
+    <a asp-page="/Admin/AdminLogin" class="close-x">X</a>
+
+    <div class="admin-login-wrapper">
+        <div class="admin-login-box">
+            <h2>Admin Login</h2>
+
+            @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+            {
+                <div class="alert alert-danger text-center mb-3">
+                    @Model.ErrorMessage
+                </div>
+            }
+
+            <form method="post">
+                <input asp-for="Email"
+                       class="login-input"
+                       placeholder="admin@gmail.com" />
+
+                <input asp-for="Password"
+                       type="password"
+                       class="login-input"
+                       placeholder="Enter password" />
+
+                <button type="submit" class="login-btn">Login</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    .admin-login-page {
+        min-height: 100vh;
+        background: #f4f6fb;
+        position: relative;
+    }
+
+    .admin-login-wrapper {
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .admin-login-box {
+        width: 100%;
+        max-width: 400px;
+        background: #ffffff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        text-align: center;
+        border: 1px solid #ddd;
+    }
+
+        .admin-login-box h2 {
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #0f172a;
+        }
+
+    .login-input {
+        width: 100%;
+        padding: 10px 12px;
+        margin-bottom: 15px;
+        border-radius: 6px;
+        border: 1px solid #ced4da;
+        font-size: 15px;
+    }
+
+    .login-btn {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        background: linear-gradient(to right, #1e1e1e, #343a40);
+        color: white;
+        border-radius: 6px;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+        .login-btn:hover {
+            background: linear-gradient(to right, #000000, #1f2937);
+        }
+
+    .close-x {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        font-size: 22px;
+        font-weight: bold;
+        color: #000;
+        text-decoration: none;
+    }
+</style>

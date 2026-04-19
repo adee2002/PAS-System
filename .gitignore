@@ -1,0 +1,4 @@
+bin/
+obj/
+WebApplication1.csproj.user
+appsettings.Development.json

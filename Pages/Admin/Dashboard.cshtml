@@ -1,0 +1,61 @@
+﻿@page
+@model WebApplication1.Pages.Admin.DashboardModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<div class="dashboard-top">
+    <h2 class="page-title mb-0">Admin Dashboard</h2>
+    <a asp-page="/Admin/AdminLogin" class="btn btn-outline-dark">Logout</a>
+</div>
+
+<div class="row g-4">
+
+    <div class="col-lg-6">
+        <div class="card card-box">
+            <div class="card-header card-header-custom">
+                Quick Actions
+            </div>
+
+            <div class="card-body">
+                <div class="d-grid gap-3">
+                    <a asp-page="/Admin/ResearchAreas" class="btn btn-primary w-100 py-2">
+                        Manage Research Areas
+                    </a>
+
+                    <a asp-page="/Admin/Users" class="btn btn-success w-100 py-2">
+                        Manage Users
+                    </a>
+
+                    <a asp-page="/Admin/Projects" class="btn btn-warning text-dark w-100 py-2">
+                        Project Oversight
+                    </a>
+
+                    <a asp-page="/Admin/Matches" class="btn btn-danger w-100 py-2">
+                        Match Management
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-6">
+        <div class="card card-box">
+            <div class="card-header card-header-custom">
+                Admin Summary
+            </div>
+
+            <div class="card-body">
+                <ul class="info-list">
+                    <li><strong>Total Students:</strong> @Model.TotalStudents</li>
+                    <li><strong>Total Supervisors:</strong> @Model.TotalSupervisors</li>
+                    <li><strong>Total Projects:</strong> @Model.TotalProjects</li>
+                    <li><strong>Pending Projects:</strong> @Model.PendingProjects</li>
+                    <li><strong>Total Matches:</strong> @Model.TotalMatches</li>
+                    <li><strong>Research Areas:</strong> @Model.TotalResearchAreas</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,70 @@
+﻿@page "{id:int}"
+@model WebApplication1.Pages.Admin.EditProjectModel
+@{
+    ViewData["Title"] = "Edit Project";
+}
+
+<h2 class="page-title">Edit Project</h2>
+
+<div class="card card-box">
+    <div class="card-header card-header-custom">
+        Update Project Details
+    </div>
+
+    <div class="card-body">
+        <form method="post" class="row g-3">
+
+            <input type="hidden" asp-for="ProjectItem.Id" />
+
+            <div class="col-md-6">
+                <label class="form-label">Project Title</label>
+                <input asp-for="ProjectItem.Title" class="form-control" />
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Tech Stack</label>
+                <input asp-for="ProjectItem.TechStack" class="form-control" />
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Student</label>
+                <select asp-for="ProjectItem.StudentId" class="form-select">
+                    @foreach (var student in Model.Students)
+                    {
+                        <option value="@student.Id">@student.FullName</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Research Area</label>
+                <select asp-for="ProjectItem.ResearchAreaId" class="form-select">
+                    @foreach (var area in Model.ResearchAreas)
+                    {
+                        <option value="@area.Id">@area.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-12">
+                <label class="form-label">Abstract</label>
+                <textarea asp-for="ProjectItem.Abstract" class="form-control" rows="4"></textarea>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Status</label>
+                <select asp-for="ProjectItem.Status" class="form-select">
+                    <option value="Pending">Pending</option>
+                    <option value="Under Review">Under Review</option>
+                    <option value="Matched">Matched</option>
+                </select>
+            </div>
+
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Update Project</button>
+                <a asp-page="/Admin/Projects" class="btn btn-secondary">Cancel</a>
+            </div>
+
+        </form>
+    </div>
+</div>

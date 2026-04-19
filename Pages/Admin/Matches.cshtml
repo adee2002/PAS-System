@@ -1,0 +1,112 @@
+﻿@page
+@model WebApplication1.Pages.Admin.MatchesModel
+@{
+    ViewData["Title"] = "Matches";
+}
+
+<h2 class="page-title">Match Management</h2>
+
+<!-- ================= ADD MATCH ================= -->
+<div class="card card-box mb-4">
+    <div class="card-header card-header-custom">
+        Create Match
+    </div>
+
+    <div class="card-body">
+        <form method="post" class="row g-3">
+
+            <div class="col-md-6">
+                <label class="form-label">Project</label>
+                <select asp-for="NewMatch.ProjectId" class="form-select">
+                    <option value="">Select project</option>
+                    @foreach (var project in Model.Projects)
+                    {
+                        <option value="@project.Id">
+                            @project.Title - (@project.Student?.FullName)
+                        </option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Supervisor</label>
+                <select asp-for="NewMatch.SupervisorId" class="form-select">
+                    <option value="">Select supervisor</option>
+                    @foreach (var sup in Model.Supervisors)
+                    {
+                        <option value="@sup.Id">@sup.FullName</option>
+                    }
+                </select>
+            </div>
+
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary w-100">
+                    Create Match
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<!-- ================= MATCH TABLE ================= -->
+<div class="card card-box">
+    <div class="card-header card-header-custom">
+        All Matches
+    </div>
+
+    <div class="card-body">
+
+        <table class="table table-bordered table-hover align-middle">
+            <thead>
+                <tr>
+                    <th>Project</th>
+                    <th>Student</th>
+                    <th>Supervisor</th>
+                    <th>Date</th>
+                    <th style="width:150px;">Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @if (Model.MatchList.Count == 0)
+                {
+                    <tr>
+                        <td colspan="5" class="empty-state">No matches found</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var match in Model.MatchList)
+                    {
+                        <tr>
+                            <td>@match.Project?.Title</td>
+                            <td>@match.Project?.Student?.FullName</td>
+                            <td>@match.Supervisor?.FullName</td>
+                            <td>@match.MatchedDate.ToString("yyyy-MM-dd")</td>
+
+                            <td>
+                                <form method="post" asp-page-handler="Delete">
+                                    <input type="hidden" name="id" value="@match.Id" />
+                                    <button type="submit"
+                                            class="btn btn-danger btn-sm"
+                                            onclick="return confirm('Delete this match?');">
+                                        Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
+
+            </tbody>
+        </table>
+
+    </div>
+</div>
+<div class="mt-3">
+    <a asp-page="/Admin/Dashboard" class="btn btn-secondary">
+        Back to Dashboard
+    </a>
+</div>
