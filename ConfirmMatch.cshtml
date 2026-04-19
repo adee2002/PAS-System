@@ -1,0 +1,43 @@
+﻿@model ProjectApprovalSystem.Models.Match
+
+@{
+    ViewData["Title"] = "Confirm Match";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-warning text-dark">
+                    <h3 class="mb-0">Confirm Project Match</h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <h5>Project: @Model.Project?.Title</h5>
+                        <p>Are you sure you want to confirm this match?</p>
+                        <hr />
+                        <p class="mb-0">
+                            <strong>Important:</strong> Once confirmed:
+                        </p>
+                        <ul>
+                            <li>The match will be finalized</li>
+                            <li>Student identities will be revealed to both parties</li>
+                            <li>You will be able to see the student's contact information</li>
+                            <li>This action cannot be undone</li>
+                        </ul>
+                    </div>
+
+                    <form asp-action="ConfirmMatch" method="post">
+                        <input type="hidden" name="matchId" value="@Model.Id" />
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a asp-action="Dashboard" class="btn btn-secondary me-md-2">Cancel</a>
+                            <button type="submit" name="confirm" value="true" class="btn btn-success">
+                                Yes, Confirm Match
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
