@@ -1,0 +1,23 @@
+# Visual Studio / IDE
+.vs/
+**/.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# .NET build artifacts
+bin/
+obj/
+**/bin/
+**/obj/
+
+# Local runtime/log artifacts
+*.log
+*.db
+*.db-shm
+*.db-wal
+
+# OS junk
+Thumbs.db
+Desktop.ini
